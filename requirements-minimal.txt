@@ -1,0 +1,11 @@
+# Minimal dependencies for basic functionality
+# Use this if full requirements.txt fails
+
+openai>=1.12.0
+pypdf>=4.0.0
+pdfplumber>=0.10.0
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+
+# For Streamlit demo
+streamlit>=1.31.0
