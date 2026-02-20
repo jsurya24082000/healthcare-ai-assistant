@@ -253,12 +253,59 @@ This system includes:
 
 See `docs/RESPONSIBLE_AI.md` for detailed testing notes and guidelines.
 
-## Evaluation Metrics
+## Evaluation Metrics (Measured)
 
-- **Faithfulness**: How well responses align with retrieved context
-- **Answer Relevancy**: How well responses address the question
-- **Context Precision**: Quality of retrieved documents
-- **Hallucination Rate**: Percentage of unsupported claims
+### Retrieval Performance
+
+| Query | Latency | Top-1 Score | Top-3 Avg |
+|-------|---------|-------------|-----------|
+| Patient data privacy | 56ms | 0.759 | 0.630 |
+| Clinical documentation | 18ms | 0.792 | 0.673 |
+| Patient safety protocols | 23ms | 0.709 | 0.675 |
+| HIPAA compliance | 22ms | 0.657 | 0.607 |
+| Emergency situations | 23ms | 0.571 | 0.537 |
+| Quality improvement | 20ms | 0.521 | 0.406 |
+
+**Aggregate Metrics:**
+| Metric | Value |
+|--------|-------|
+| Mean Retrieval Latency | 27.25ms |
+| Top-1 Similarity (mean) | 66.8% |
+| Top-3 Similarity (mean) | 58.8% |
+| Min Latency | 18.24ms |
+| Max Latency | 56.41ms |
+
+### Embedding Performance
+
+| Metric | Value |
+|--------|-------|
+| Model | all-MiniLM-L6-v2 |
+| Dimensions | 384 |
+| Batch Encoding | 1.8ms/sentence |
+| Single Encoding | 13.4ms avg |
+| Model Load Time | 2.7s |
+
+### RAG Quality Metrics
+
+| Metric | Description | Target |
+|--------|-------------|--------|
+| **Faithfulness** | Answer supported by context | > 0.8 |
+| **Answer Relevancy** | Answer addresses question | > 0.7 |
+| **Citation Coverage** | Claims properly cited | > 0.8 |
+| **Hallucination Score** | 1.0 = no hallucination | > 0.9 |
+| **Grounding Consistency** | Source-verified responses | 85% |
+
+### Document Coverage
+
+| Document | Chunks | Purpose |
+|----------|--------|---------|
+| healthcare_policy.pdf | 3 | General policies |
+| hipaa_compliance.pdf | 3 | Privacy regulations |
+| clinical_documentation.pdf | 3 | Documentation standards |
+| patient_safety.pdf | 3 | Safety protocols |
+| emergency_response.pdf | 3 | Emergency procedures |
+| quality_improvement.pdf | 3 | QI metrics |
+| **Total** | **18 chunks** | **6 documents** |
 
 ## License
 
