@@ -151,15 +151,31 @@ uvicorn api:app --reload --port 8000
 streamlit run app.py
 ```
 
+## Production Features
+
+| Feature | Implementation |
+|---------|----------------|
+| **REST API** | FastAPI with OpenAPI docs at `/docs` |
+| **Concurrent Requests** | Async/await with uvicorn workers |
+| **Rate Limiting** | 100 requests/minute per client IP |
+| **Caching Layer** | In-memory cache with TTL (Redis-ready) |
+| **Load Testing** | 100+ QPS benchmark suite |
+| **Horizontal Scaling** | Stateless design, Nginx load balancer |
+| **Monitoring** | Prometheus metrics + Grafana dashboards |
+| **Docker Deployment** | Multi-stage build, docker-compose |
+| **CI/CD** | GitHub Actions pipeline |
+
 ## API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check for load balancers |
-| `/metrics` | GET | Prometheus metrics |
-| `/query` | POST | Single RAG query |
-| `/batch-query` | POST | Batch queries (up to 10) |
-| `/stats` | GET | System resource stats |
+| Endpoint | Method | Description | Rate Limit |
+|----------|--------|-------------|------------|
+| `/health` | GET | Health check for load balancers | Unlimited |
+| `/metrics` | GET | Prometheus metrics | Unlimited |
+| `/query` | POST | Single RAG query with caching | 100/min |
+| `/batch-query` | POST | Batch queries (up to 10) | 100/min |
+| `/stats` | GET | System resource stats | 100/min |
+| `/cache/stats` | GET | Cache statistics | 100/min |
+| `/scaling/info` | GET | Instance info for load balancing | 100/min |
 
 ### Example Request
 
@@ -175,13 +191,46 @@ curl -X POST http://localhost:8000/query \
 {
   "answer": "Based on the healthcare policy documents...",
   "sources": [
-    {"document": "policy_doc_1.pdf", "page": 5, "relevance": 0.92}
+    {"document": "hipaa_compliance.pdf", "chunk_id": "hipaa_p1_c0", "relevance": 0.759}
   ],
-  "confidence": 0.85,
-  "latency_ms": 342.5,
-  "retrieval_latency_ms": 12.3,
-  "llm_latency_ms": 328.1
+  "confidence": 0.759,
+  "latency_ms": 27.5,
+  "retrieval_latency_ms": 25.2,
+  "llm_latency_ms": 0.1,
+  "cached": false,
+  "timestamp": "2026-02-20T00:04:19.066Z"
 }
+```
+
+## Horizontal Scaling
+
+```bash
+# Production deployment with 2 API instances + Nginx load balancer
+docker-compose -f docker-compose.prod.yml up -d
+
+# Scale to more instances
+docker-compose -f docker-compose.prod.yml up -d --scale rag-api=4
+```
+
+Architecture:
+```
+                    ┌─────────────┐
+                    │   Nginx     │
+                    │ Load Balancer│
+                    └──────┬──────┘
+           ┌───────────────┼───────────────┐
+           ▼               ▼               ▼
+    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+    │ RAG API #1  │ │ RAG API #2  │ │ RAG API #N  │
+    │ (stateless) │ │ (stateless) │ │ (stateless) │
+    └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+           │               │               │
+           └───────────────┼───────────────┘
+                           ▼
+                    ┌─────────────┐
+                    │ Redis Cache │
+                    │ (shared)    │
+                    └─────────────┘
 ```
 
 ## Running Benchmarks

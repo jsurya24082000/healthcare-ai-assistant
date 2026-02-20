@@ -1,13 +1,20 @@
 """
 Load Testing Suite for Healthcare RAG API
-Measure p50/p95 latency, RPS, and system behavior under load
+Measure p50/p95 latency, RPS, and system behavior under load.
+
+Targets:
+- 100+ QPS sustained throughput
+- p50 latency < 50ms
+- p95 latency < 200ms
+- Error rate < 1%
 """
 
 import asyncio
 import aiohttp
 import time
 import statistics
-from dataclasses import dataclass
+import argparse
+from dataclasses import dataclass, asdict
 from typing import List, Dict
 import json
 
