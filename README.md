@@ -18,27 +18,27 @@ A **production-ready, containerized microservice** for healthcare policy documen
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## System Metrics (AWS EC2 t3.large)
+## System Metrics (Local Development)
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| **p50 Latency** | 320ms | Median response time |
-| **p95 Latency** | 850ms | 95th percentile response time |
-| **p99 Latency** | 1250ms | 99th percentile response time |
-| **Throughput** | 30.8 RPS | Requests per second under load |
-| **Concurrent Users** | 50 | Simulated concurrent connections |
-| **API Uptime** | 99.8% | During load testing |
-| **Memory Usage** | 1.25 GB avg | Peak: 1.68 GB |
-| **CPU Utilization** | 65% avg | Peak: 92% |
+| **Model Load Time** | 2.7s | MiniLM-L6-v2 initialization |
+| **Retrieval Latency** | 27ms avg | Including embedding + FAISS search |
+| **Min Latency** | 18ms | Best case retrieval |
+| **Max Latency** | 56ms | First query (cold start) |
+| **Batch Encoding** | 54ms/30 sentences | ~1.8ms per sentence |
+| **Single Encoding** | 13ms | Individual query encoding |
 
-## Retrieval & AI Metrics
+## Retrieval & AI Metrics (Measured)
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| **Retrieval Accuracy** | 65.4% | Top-1 relevance score |
-| **Grounding Consistency** | 85% | Citation-supported responses |
-| **Hallucination Reduction** | ~40% | Pattern-based detection |
-| **FAISS Lookup** | 12ms p50 | Vector search latency |
+| **Top-1 Similarity** | 66.8% | Mean cosine similarity for best match |
+| **Top-3 Avg Similarity** | 58.8% | Average across top-3 retrieved chunks |
+| **Retrieval Latency** | 27ms avg | End-to-end retrieval (18-56ms range) |
+| **Embedding Encode** | 1.8ms/sentence | Batch encoding throughput |
+| **Documents Indexed** | 6 PDFs | 18 chunks total |
+| **Embedding Model** | MiniLM-L6-v2 | 384-dimensional vectors |
 
 ## Features
 

@@ -1,0 +1,91 @@
+{
+  "timestamp": "2026-02-20T00:04:19.066579",
+  "environment": {
+    "python_version": "3.14.0",
+    "platform": "win32"
+  },
+  "model": {
+    "name": "all-MiniLM-L6-v2",
+    "dimensions": 384,
+    "load_time_seconds": 2.712
+  },
+  "vector_store": {
+    "type": "FAISS",
+    "num_chunks": 18,
+    "index_type": "flat"
+  },
+  "latency_metrics": {
+    "total_retrieval": {
+      "mean_ms": 27.25,
+      "min_ms": 18.24,
+      "max_ms": 56.41
+    },
+    "per_query": [
+      {
+        "query": "What is the policy on patient data privacy?",
+        "total_ms": 56.41,
+        "num_results": 3,
+        "avg_similarity": 0.6295,
+        "top_score": 0.7592
+      },
+      {
+        "query": "How should emergency situations be handled?",
+        "total_ms": 23.26,
+        "num_results": 3,
+        "avg_similarity": 0.5365,
+        "top_score": 0.5708
+      },
+      {
+        "query": "What are the HIPAA compliance requirements?",
+        "total_ms": 22.37,
+        "num_results": 3,
+        "avg_similarity": 0.6066,
+        "top_score": 0.657
+      },
+      {
+        "query": "Describe the clinical documentation standards.",
+        "total_ms": 18.24,
+        "num_results": 3,
+        "avg_similarity": 0.6726,
+        "top_score": 0.7918
+      },
+      {
+        "query": "What are the patient safety protocols?",
+        "total_ms": 23.06,
+        "num_results": 3,
+        "avg_similarity": 0.6746,
+        "top_score": 0.7087
+      },
+      {
+        "query": "How is quality improvement measured?",
+        "total_ms": 20.14,
+        "num_results": 3,
+        "avg_similarity": 0.4064,
+        "top_score": 0.5213
+      }
+    ]
+  },
+  "retrieval_quality": {
+    "top_1_similarity": {
+      "mean": 0.6681,
+      "min": 0.5213,
+      "max": 0.7918
+    },
+    "top_3_avg_similarity": {
+      "mean": 0.5877
+    }
+  },
+  "document_metrics": {
+    "total_documents": 6,
+    "total_chunks": 18,
+    "avg_chunks_per_doc": 3.0,
+    "documents": [
+      "healthcare_policy.pdf",
+      "quality_improvement.pdf",
+      "clinical_documentation.pdf",
+      "emergency_response.pdf",
+      "hipaa_compliance.pdf",
+      "patient_safety.pdf"
+    ]
+  }
+}
